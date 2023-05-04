@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class UsersRepository {
+export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(name: string, email: string) {
@@ -12,5 +12,9 @@ export class UsersRepository {
         email,
       },
     });
+  }
+
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 }

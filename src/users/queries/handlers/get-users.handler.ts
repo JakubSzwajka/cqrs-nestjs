@@ -7,7 +7,6 @@ export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
   constructor(private readonly prisma: PrismaService) {}
 
   async execute(query: GetUsersQuery) {
-    const users = await this.prisma.user.findMany();
-    return users;
+    return await this.prisma.user.findMany();
   }
 }

@@ -4,15 +4,15 @@ import { CreateUserHandler } from './commands/handlers/create-user.handler';
 import { GetUsersHandler } from './queries/handlers/get-users.handler';
 import { UserController } from './users.controller';
 import { PrismaService } from 'src/prisma.service';
-import { UsersService } from './users.service';
-import { UsersRepository } from './repositories/users.repository';
+import { UserService } from './user.service';
+import { UserRepository } from './repositories/user.repository';
 
 @Module({
   imports: [CqrsModule],
   providers: [
     PrismaService,
-    UsersService,
-    UsersRepository,
+    UserService,
+    UserRepository,
     CreateUserHandler,
     GetUsersHandler,
   ],

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Logger, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Logger } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from './commands/create-user.command';
 import { GetUsersQuery } from './queries/get-users.query';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ZodValidationPipe } from 'nestjs-zod';
+import { GetUserDto } from './dto/get-user.dto';
+import { ZodSerializerDto } from 'nestjs-zod';
 
 @Controller('users')
 export class UserController {
@@ -14,14 +15,13 @@ export class UserController {
   ) {}
 
   @Post()
-  @UsePipes(ZodValidationPipe)
   async createUser(@Body() createUserDto: CreateUserDto) {
-    const { name, email } = createUserDto; // ??? do we have some kind of validation here?
-    this.logger.log('We have passed DTO: ', name, email);
+    const { name, email } = createUserDto; // Zod DTO makes sure that the body is valid
     await this.commandBus.execute(new CreateUserCommand(name, email));
   }
 
   @Get()
+  @ZodSerializerDto(GetUserDto)
   async getUsers() {
     const users = await this.queryBus.execute(new GetUsersQuery());
     return users;
